@@ -10,7 +10,7 @@ header {
   right: 0;
   z-index: 1000;
   overflow: hidden;
-  max-height: var(--header-height);
+  max-height: calc(var(--banner-height) + var(--header-height));
   background-color: light-dark(var(--color-light), var(--color-dark));
 
   ul {
@@ -361,6 +361,226 @@ header {
       .header-content {
         height: initial;
       }
+    }
+  }
+}
+
+/* ============================================================
+   Safety-Kleen theme layer
+   util bar (#030404) + white primary nav w/ 4px yellow underline
+   + grey (#7c7979) mega-menu w/ yellow ALL-CAPS column headers
+   ============================================================ */
+
+body header {
+  --logo-width: 220px;
+  --logo-height: 52px;
+
+  background-color: var(--color-light);
+  color: var(--sk-black);
+
+  a { color: var(--sk-black); }
+
+  /* logo (white/reversed asset) */
+  .brand-section .default-content {
+    a { color: var(--color-light); }
+
+    img {
+      width: auto;
+      max-width: none;
+      height: var(--logo-height);
+    }
+
+    .brand-text { display: none; }
+  }
+
+  /* utility bar links */
+  .actions-section {
+    background-color: var(--sk-black);
+
+    .default-content ul,
+    .block-content ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+
+    /* hairline separators between items */
+    li + li::before {
+      content: "";
+      width: 1px;
+      height: 13px;
+      margin: 0 var(--spacing-m);
+      background-color: rgb(255 255 255 / 30%);
+    }
+
+    a {
+      font-family: var(--heading-font-family);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      color: var(--color-light);
+      white-space: nowrap;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--sk-yellow);
+      }
+    }
+
+    /* account actions (Register / Sign In / CA store) read as the accent group */
+    li:nth-last-child(-n + 3) a {
+      font-weight: 700;
+    }
+  }
+
+  /* primary nav links */
+  .main-nav-section {
+    .main-nav-link {
+      font-family: var(--heading-font-family);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      color: var(--sk-black);
+      border-bottom: var(--sk-nav-underline) solid transparent;
+    }
+
+    .main-nav-item:hover > p > .main-nav-link,
+    .main-nav-item.is-open > p > .main-nav-link,
+    .main-nav-item > a.main-nav-link:hover {
+      border-bottom-color: var(--sk-yellow);
+    }
+  }
+}
+
+@media (width >= 900px) {
+  body header {
+    max-height: calc(var(--banner-height) + var(--header-height));
+    background-color: var(--color-light);
+
+    .header-content {
+      grid-template: var(--util-height) var(--main-nav-height) / auto 1fr;
+      gap: 0 var(--spacing-l);
+      align-items: center;
+      max-width: none;
+      margin: 0;
+      padding-inline: clamp(16px, 3vw, 48px);
+    }
+
+    /* util bar pinned to the top row, right-aligned, full-bleed black */
+    .actions-section {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      align-self: stretch;
+      margin-inline: calc(-1 * clamp(16px, 3vw, 48px));
+      padding-inline: clamp(16px, 3vw, 48px);
+
+      > .default-content {
+        height: var(--util-height);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        max-width: initial;
+      }
+    }
+
+    .brand-section {
+      grid-column: 1;
+      grid-row: 2;
+
+      .default-content { height: var(--main-nav-height); }
+    }
+
+    .main-nav-section {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .main-nav-section .main-nav-list {
+      justify-content: flex-end;
+      gap: clamp(14px, 1.6vw, 28px);
+      align-items: center;
+      height: var(--main-nav-height);
+    }
+
+    .main-nav-section .main-nav-link {
+      line-height: var(--main-nav-height);
+      font-size: clamp(14px, 1.05vw, 17px);
+    }
+
+    /* mega-menu: full-width grey panel dropping below the header, opens on
+       hover or click; children that own a sub-list become yellow ALL-CAPS
+       column headers with their links beneath (the reference treatment) */
+    .main-nav-item > ul {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(var(--banner-height) + var(--header-height));
+      background-color: var(--sk-mega-grey);
+      padding: var(--spacing-xxl) clamp(16px, 3vw, 48px);
+      list-style: none;
+      z-index: 1001;
+    }
+
+    .main-nav-item:hover > ul,
+    .main-nav-item.is-open > ul {
+      display: block;
+      column-count: 4;
+      column-gap: var(--spacing-xxl);
+    }
+
+    /* each top-level entry is a self-contained column block */
+    .main-nav-item > ul > li {
+      break-inside: avoid;
+      margin: 0 0 var(--spacing-l);
+    }
+
+    .main-nav-item > ul a {
+      display: block;
+      color: var(--color-light);
+      font-size: var(--body-font-size-m);
+      line-height: 1.3;
+      text-decoration: none;
+
+      &:hover { color: var(--sk-yellow); }
+    }
+
+    /* a child that owns its own sub-list becomes a column header */
+    .main-nav-item > ul > li > p > a {
+      margin-bottom: var(--spacing-m);
+      color: var(--sk-yellow);
+      font-family: var(--heading-font-family);
+      font-weight: 700;
+      font-size: var(--heading-font-size-s);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .main-nav-item > ul ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-nav-item > ul ul li {
+      margin-bottom: var(--spacing-s);
+    }
+
+    /* third level (e.g. Accessories › Facility Maintenance › …) indents */
+    .main-nav-item > ul ul ul {
+      margin: var(--spacing-xs) 0 var(--spacing-s) var(--spacing-m);
     }
   }
 }

@@ -1,57 +1,17 @@
 @font-face {
-  font-family: Montserrat;
+  font-family: "Roboto Condensed";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400;
   font-display: swap;
-  src: url("/styles/fonts/montserrat.woff2") format("woff2");
-  unicode-range:
-    U+0000-00FF,
-    U+0131,
-    U+0152-0153,
-    U+02BB-02BC,
-    U+02C6,
-    U+02DA,
-    U+02DC,
-    U+0304,
-    U+0308,
-    U+0329,
-    U+2000-206F,
-    U+20AC,
-    U+2122,
-    U+2191,
-    U+2193,
-    U+2212,
-    U+2215,
-    U+FEFF,
-    U+FFFD;
+  src: url("/styles/fonts/roboto-condensed-400.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: Montserrat;
-  font-style: italic;
-  font-weight: 100 900;
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
   font-display: swap;
-  src: url("/styles/fonts/montserrat-italic.woff2") format("woff2");
-  unicode-range:
-    U+0000-00FF,
-    U+0131,
-    U+0152-0153,
-    U+02BB-02BC,
-    U+02C6,
-    U+02DA,
-    U+02DC,
-    U+0304,
-    U+0308,
-    U+0329,
-    U+2000-206F,
-    U+20AC,
-    U+2122,
-    U+2191,
-    U+2193,
-    U+2212,
-    U+2215,
-    U+FEFF,
-    U+FFFD;
+  src: url("/styles/fonts/roboto-condensed-700.woff2") format("woff2");
 }
 
 :root {
@@ -68,8 +28,8 @@
   --spacing-s: 8px;
   --spacing-xs: 4px;
 
-  /* color schemes */
-  color-scheme: light dark;
+  /* color schemes — this site is designed light-only */
+  color-scheme: light;
 
   /* color tokens */
   --color-gray-100: #f1f1f1;
@@ -154,6 +114,14 @@
   --color-yellow-800: #373100;
   --color-yellow-900: #1e1b00;
 
+  /* Safety-Kleen brand tokens
+     One yellow to rule them all (the source has ~4; we consolidate). */
+  --sk-yellow: rgb(255 212 0);      /* #FFD400 */
+  --sk-yellow-rgb: 255 212 0;
+  --sk-black: #030404;              /* utility nav bar */
+  --sk-mega-grey: #7c7979;          /* mega-menu panel */
+  --sk-nav-underline: 4px;
+
   /* named colors */
   --color-light-base: 255 255 255;
   --color-dark-base: 0 0 0;
@@ -161,13 +129,14 @@
   --color-dark: rgb(0 0 0);
   --color-text: light-dark(var(--color-dark), var(--color-light));
   --color-link: light-dark(var(--color-gray-900), var(--color-gray-100));
-  --color-brand: var(--color-purple-500);
-  --color-accent: light-dark(var(--color-magenta-600), var(--color-magenta-500));
+  --color-brand: var(--sk-yellow);
+  --color-accent: var(--sk-yellow);
   --color-background: light-dark(var(--color-light), var(--color-dark));
-  --color-shaded: light-dark(#f9f9f9, #111);
+  --color-shaded: light-dark(#f4f4f4, #111);
 
   /* fonts */
-  --font-family: montserrat, "Trebuchet MS", sans-serif;
+  --font-family: arial, helvetica, sans-serif;
+  --heading-font-family: "Roboto Condensed", "Arial Narrow", arial, sans-serif;
 
   /* headings */
   --heading-font-size-xxl: 32.44px;
@@ -189,16 +158,17 @@
   --body-line-height: 1.6;
 
   /* misc */
-  --header-height: 64px;
+  --util-height: 40px;
+  --main-nav-height: 96px;
+  --header-height: calc(var(--util-height) + var(--main-nav-height));
   --breadcrumb-height: 24px;
+  --banner-height: 0px; /* set by the banner block when present */
 }
 
-.light-scheme {
-  color-scheme: light;
-}
-
+.light-scheme,
 .dark-scheme {
-  color-scheme: dark;
+  /* light-only site: never honor a stored dark toggle */
+  color-scheme: light;
 }
 
 html {
@@ -209,10 +179,10 @@ body {
   margin: 0;
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: "Trebuchet MS", sans-serif;
+  font-family: var(--font-family);
   font-size: var(--body-font-size-m);
   line-height: var(--body-line-height);
-  padding: var(--header-height) 0 0;
+  padding: calc(var(--banner-height) + var(--header-height)) 0 0;
 
   &.session {
     /* only allow font loading if a session */
@@ -220,7 +190,7 @@ body {
   }
 
   &.has-breadcrumb {
-    margin: calc(var(--header-height) + var(--breadcrumb-height)) 0 0;
+    margin: calc(var(--banner-height) + var(--header-height) + var(--breadcrumb-height)) 0 0;
   }
 
   &.no-header {
@@ -242,10 +212,14 @@ a {
   &.btn {
     display: inline-block;
     line-height: 1;
-    font-weight: 500;
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     text-decoration: none;
     border: 2px solid;
-    padding: 8px 12px;
+    border-radius: 0;
+    padding: 14px 22px;
     box-sizing: border-box;
 
     &.btn-outline {
@@ -264,9 +238,14 @@ a {
   }
 
   &.btn-primary {
-    color: var(--color-background);
-    background-color: var(--color-text);
-    border: 2px solid var(--color-text);
+    color: var(--sk-black);
+    background-color: var(--sk-yellow);
+    border: 2px solid var(--sk-yellow);
+
+    &:hover {
+      background-color: #fd3;
+      border-color: #fd3;
+    }
 
     &.btn-outline {
       color: var(--color-text);
@@ -275,12 +254,17 @@ a {
   }
 
   &.btn-secondary {
-    color: var(--color-background);
-    background-color: var(--color-gray-500);
-    border: 2px solid var(--color-gray-500);
+    color: var(--color-light);
+    background-color: var(--sk-mega-grey);
+    border: 2px solid var(--sk-mega-grey);
+
+    &:hover {
+      background-color: #6a6767;
+      border-color: #6a6767;
+    }
 
     &.btn-outline {
-      color: var(--color-gray-500);
+      color: var(--sk-mega-grey);
     }
   }
 
@@ -302,6 +286,43 @@ a {
   > .default-content {
     max-width: var(--grid-container-width);
     margin: 0 auto;
+  }
+}
+
+/* default-content rhythm */
+main .section > .default-content {
+  padding-block: var(--spacing-xl);
+}
+
+/* a bare link list in default content renders as a card grid
+   (used by the homepage "Shop by Category" section) */
+main .section > .default-content > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-m);
+  padding: 0;
+  list-style: none;
+}
+
+main .section > .default-content > ul > li {
+  margin: 0;
+}
+
+main .section > .default-content > ul > li > a {
+  display: block;
+  padding: var(--spacing-l);
+  background-color: var(--color-shaded);
+  border-left: var(--sk-nav-underline) solid var(--sk-yellow);
+  color: var(--color-text);
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--sk-yellow);
+    color: var(--sk-black);
   }
 }
 
@@ -332,7 +353,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
   line-height: var(--heading-line-height);
 }
 

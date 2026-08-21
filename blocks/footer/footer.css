@@ -55,3 +55,97 @@ footer {
     }
   }
 }
+
+/* ============================================================
+   Safety-Kleen theme layer — dark footer, yellow column heads
+   ============================================================ */
+
+body footer {
+  background-color: var(--sk-black);
+  color: var(--color-light);
+
+  a {
+    color: var(--color-light);
+
+    &:hover { color: var(--sk-yellow); }
+  }
+
+  .footer-content {
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+    padding: var(--spacing-xxl) 0 var(--spacing-l);
+  }
+
+  /* column heads */
+  .section p strong {
+    display: block;
+    margin-bottom: var(--spacing-m);
+    color: var(--sk-yellow);
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    font-size: var(--heading-font-size-s);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .section ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .section li { margin: 0 0 var(--spacing-s); }
+
+  /* inline legal links (Privacy / Terms) */
+  .section-legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-l);
+  }
+
+  .section-legal li { margin: 0; }
+
+  .section-legal a {
+    font-size: var(--body-font-size-s);
+    color: var(--color-gray-300);
+  }
+
+  /* copyright reads as muted body text, not a heading */
+  .section-copyright {
+    margin-top: var(--spacing-m);
+  }
+
+  .section-copyright p strong {
+    display: inline;
+    margin: 0;
+    color: var(--color-gray-300);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: var(--body-font-size-s);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
+@media (width >= 900px) {
+  body footer {
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-xxl);
+      align-items: start;
+    }
+
+    /* legal + copyright form the bottom bar, spanning all columns */
+    .section-legal,
+    .section-copyright {
+      grid-column: 1 / -1;
+    }
+
+    .section-legal {
+      border-top: 1px solid rgb(255 255 255 / 12%);
+      margin-top: var(--spacing-l);
+      padding-top: var(--spacing-l);
+    }
+  }
+}

@@ -223,3 +223,71 @@
     }
   }
 }
+
+/* ============================================================
+   Safety-Kleen theme layer — full-bleed hero, left copy block
+   ============================================================ */
+
+body .hero {
+  --min-height: 560px;
+
+  color: var(--color-light);
+
+  .hero-background {
+    position: absolute;
+    inset: 0;
+
+    picture,
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 10% 50%;
+    }
+
+    /* dark scrim for text legibility over the photo */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgb(3 4 4 / 72%) 0%, rgb(3 4 4 / 35%) 55%, rgb(3 4 4 / 10%) 100%);
+    }
+  }
+
+  .hero-foreground {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: var(--min-height);
+    max-width: var(--grid-container-width);
+    margin: 0 auto;
+    padding: var(--spacing-xxl) 0;
+  }
+
+  .fg-text { max-width: 640px; }
+
+  .hero-heading {
+    margin: 0 0 var(--spacing-l);
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.02;
+    text-transform: uppercase;
+    color: var(--color-light);
+  }
+
+  .fg-text p {
+    font-size: var(--body-font-size-l);
+    line-height: 1.5;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-m);
+    margin-top: var(--spacing-l);
+  }
+}
+

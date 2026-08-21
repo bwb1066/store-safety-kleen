@@ -169,14 +169,21 @@ async function decorateActionSection(section) {
 }
 
 async function decorateHeader(fragment) {
-  const sections = fragment.querySelectorAll(':scope > .section');
-  if (sections[0]) decorateBrandSection(sections[0]);
-  if (sections[1]) decorateNavSection(sections[1]);
-  if (sections[2]) decorateActionSection(sections[2]);
+  const sections = [...fragment.querySelectorAll(':scope > .section')];
+  // An optional leading promo/notification banner is chrome, not a nav section —
+  // pull it out so brand/nav/actions keep their expected positions.
+  const banner = sections.find((section) => section.querySelector('.banner')) || null;
+  const chrome = sections.filter((section) => section !== banner);
+
+  if (chrome[0]) decorateBrandSection(chrome[0]);
+  if (chrome[1]) decorateNavSection(chrome[1]);
+  if (chrome[2]) decorateActionSection(chrome[2]);
 
   for (const pattern of HEADER_ACTIONS) {
     decorateAction(fragment, pattern);
   }
+
+  return banner;
 }
 
 /**
@@ -189,7 +196,12 @@ export default async function init(el) {
   try {
     const fragment = await loadFragment(`${locale.prefix}${path}`);
     fragment.classList.add('header-content');
-    await decorateHeader(fragment);
+    const banner = await decorateHeader(fragment);
+    // Banner is a full-width bar pinned above the utility nav.
+    if (banner) {
+      banner.classList.add('banner-section');
+      el.append(banner);
+    }
     el.append(fragment);
   } catch (e) {
     throw Error(e);
