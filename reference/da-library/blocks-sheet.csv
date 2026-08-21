@@ -1,15 +1,23 @@
 name,path
-aem-accordion,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-accordion
-aem-cards,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-cards
-aem-carousel,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-carousel
-aem-columns,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-columns
-aem-embed,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-embed
-aem-form,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-form
-aem-fragment,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-fragment
-aem-hero,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-hero
-aem-modal,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-modal
-aem-quote,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-quote
-aem-search,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-search
-aem-table,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-table
-aem-tabs,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-tabs
-aem-video,https://content.da.live/bwb1066/bwb1066-ak-base/docs/library/blocks/aem-video
+Card,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/card
+Columns,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/columns
+Hero,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/hero
+Table,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/table
+Section Metadata,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/section-metadata
+YouTube,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/youtube
+Fragment,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/fragment
+Advanced Tabs,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/advanced-tabs
+AEM Accordion,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-accordion
+AEM Cards,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-cards
+AEM Carousel,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-carousel
+AEM Columns,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-columns
+AEM Embed,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-embed
+AEM Form,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-form
+AEM Fragment,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-fragment
+AEM Hero,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-hero
+AEM Modal,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-modal
+AEM Quote,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-quote
+AEM Search,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-search
+AEM Table,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-table
+AEM Tabs,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-tabs
+AEM Video,https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-video

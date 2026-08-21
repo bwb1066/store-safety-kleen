@@ -1,0 +1,101 @@
+{
+  "total": 22,
+  "limit": 22,
+  "offset": 0,
+  "data": [
+    {
+      "name": "Card",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/card"
+    },
+    {
+      "name": "Columns",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/columns"
+    },
+    {
+      "name": "Hero",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/hero"
+    },
+    {
+      "name": "Table",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/table"
+    },
+    {
+      "name": "Section Metadata",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/section-metadata"
+    },
+    {
+      "name": "YouTube",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/youtube"
+    },
+    {
+      "name": "Fragment",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/fragment"
+    },
+    {
+      "name": "Advanced Tabs",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/advanced-tabs"
+    },
+    {
+      "name": "AEM Accordion",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-accordion"
+    },
+    {
+      "name": "AEM Cards",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-cards"
+    },
+    {
+      "name": "AEM Carousel",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-carousel"
+    },
+    {
+      "name": "AEM Columns",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-columns"
+    },
+    {
+      "name": "AEM Embed",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-embed"
+    },
+    {
+      "name": "AEM Form",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-form"
+    },
+    {
+      "name": "AEM Fragment",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-fragment"
+    },
+    {
+      "name": "AEM Hero",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-hero"
+    },
+    {
+      "name": "AEM Modal",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-modal"
+    },
+    {
+      "name": "AEM Quote",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-quote"
+    },
+    {
+      "name": "AEM Search",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-search"
+    },
+    {
+      "name": "AEM Table",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-table"
+    },
+    {
+      "name": "AEM Tabs",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-tabs"
+    },
+    {
+      "name": "AEM Video",
+      "path": "https://content.da.live/bwb1066/store-safety-clean/docs/library/blocks/aem-video"
+    }
+  ],
+  ":colWidths": [
+    249,
+    850
+  ],
+  ":sheetname": "data",
+  ":type": "sheet"
+}
