@@ -1,0 +1,47 @@
+.banner {
+  background-color: var(--sk-yellow);
+  color: var(--sk-black);
+}
+
+/* when the banner is the header's top bar, span the full width */
+header .banner-section {
+  grid-area: unset;
+  width: 100%;
+}
+
+.banner .banner-inner {
+  max-width: none;
+  margin: 0;
+  padding: 10px var(--spacing-l);
+  text-align: center;
+  font-family: arial, helvetica, sans-serif;
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  line-height: 1.44;
+  color: var(--sk-black);
+}
+
+.banner .banner-inner p {
+  margin: 0;
+}
+
+.banner a,
+.banner .banner-cta {
+  color: var(--sk-black);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.banner a:hover {
+  text-decoration: none;
+}
+
+@media (width >= 900px) {
+  .banner .banner-inner {
+    /* shrink-to-fit so the promo stays on one line; caps at the 16px source spec */
+    font-size: clamp(11px, 1.2vw, 16px);
+    white-space: nowrap;
+  }
+}
