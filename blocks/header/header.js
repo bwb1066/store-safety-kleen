@@ -259,6 +259,9 @@ export default async function init(el) {
     if (banner) {
       banner.classList.add('banner-section');
       el.append(banner);
+    } else {
+      // release the space styles.css pre-reserves for the site-wide banner
+      document.body.style.setProperty('--banner-height', '0px');
     }
     el.append(fragment);
   } catch (e) {

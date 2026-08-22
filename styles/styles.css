@@ -166,7 +166,18 @@
   --main-nav-height: 96px;
   --header-height: calc(var(--util-height) + var(--main-nav-height));
   --breadcrumb-height: 24px;
-  --banner-height: 0px; /* set by the banner block when present */
+  /* Estimated up front so the header reserves the promo strip's space on
+     first paint (the site-wide nav fragment always carries one) — the whole
+     page shifting when the banner landed was the only CLS on the site.
+     banner.js corrects to the exact height; header.js zeroes it on the rare
+     page whose fragment has no banner. Measured: 43px @ desktop, 80px @ <900. */
+  --banner-height: 43px;
+}
+
+@media (width < 900px) {
+  :root {
+    --banner-height: 80px;
+  }
 }
 
 .light-scheme,
