@@ -100,10 +100,6 @@
   transition: background-color 0.15s;
 }
 
-.ask-jack .ask-jack-submit:hover {
-  background: var(--color-yellow-600, #c9a800);
-}
-
 .ask-jack .ask-jack-chips {
   display: flex;
   flex-wrap: wrap;

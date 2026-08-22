@@ -168,8 +168,6 @@
   transition: background 0.2s ease;
 }
 
-.product-cards .product-card-add:hover { background: var(--color-yellow-600, #c9a800); }
-
 .product-cards .product-card-add.is-added {
   background: var(--sk-banner-blue);
   color: #fff;

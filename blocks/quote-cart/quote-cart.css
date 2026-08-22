@@ -204,8 +204,6 @@
   cursor: pointer;
 }
 
-.quote-cart-submit:hover { background: var(--color-yellow-600, #c9a800); }
-
 .quote-cart-terms {
   margin: 10px 0 0;
   font-size: 12px;

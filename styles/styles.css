@@ -119,6 +119,7 @@
   --sk-yellow: rgb(255 212 0);      /* #FFD400 */
   --sk-yellow-rgb: 255 212 0;
   --sk-black: #030404;              /* utility nav bar */
+
   /* mega-grey darkened from the storefront's #7c7979 just enough to give
      white text 4.5:1 (WCAG AA / Lighthouse) */
   --sk-mega-grey: #767373;          /* mega-menu panel */
@@ -254,11 +255,6 @@ a {
     background-color: var(--sk-yellow);
     border: 2px solid var(--sk-yellow);
 
-    &:hover {
-      background-color: #fd3;
-      border-color: #fd3;
-    }
-
     &.btn-outline {
       color: var(--color-text);
       background: transparent;
@@ -269,11 +265,6 @@ a {
     color: var(--color-light);
     background-color: var(--sk-mega-grey);
     border: 2px solid var(--sk-mega-grey);
-
-    &:hover {
-      background-color: #6a6767;
-      border-color: #6a6767;
-    }
 
     &.btn-outline {
       color: var(--sk-mega-grey);
