@@ -300,7 +300,7 @@ header {
        Extra specificity: the theme paints .brand-section a white (reversed
        logo) and the base sizes brand svgs to the logo box. */
     .brand-section .default-content a.cart-button {
-      width: 44px;
+      width: 56px;
       flex: none;
       justify-content: center;
       background: none;
@@ -308,8 +308,16 @@ header {
 
       .icon,
       svg {
-        width: 26px;
-        height: 26px;
+        width: 30px;
+        height: 30px;
+      }
+
+      /* anchor the badge to the glyph, not the full-height link box */
+      .nav-cart-count {
+        top: calc(50% - 28px);
+        right: 0;
+        background: var(--sk-yellow);
+        color: var(--sk-black);
       }
     }
 
