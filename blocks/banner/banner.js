@@ -4,7 +4,7 @@
  * Authored either as page content OR as the first section of the nav header
  * fragment (site-wide). When it lives in the header, header.js lifts it into a
  * full-width bar above the utility nav; this block only handles content styling
- * and reserving its (dynamic) height so nothing hides under the fixed header.
+ * and publishing its (dynamic) height, which the header adds to its own.
  *
  * Authoring contract (one cell of rich text; the last link is the CTA):
  *   | banner |
@@ -25,7 +25,7 @@ export default function init(el) {
     cta.parentElement?.classList.remove('btn-group', 'button-container');
   }
 
-  // Reserve the banner's height so the fixed header offset stays correct.
+  // Publish the banner's height so the header sizes itself to include it.
   const setHeight = () => {
     document.body.style.setProperty('--banner-height', `${el.offsetHeight}px`);
   };

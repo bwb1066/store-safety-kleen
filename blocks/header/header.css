@@ -4,10 +4,10 @@ header {
   --mega-columns: 4;
 
   display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+
+  /* In normal flow (scrolls away with the page); relative so the mega-menu
+     panels still position against the header. */
+  position: relative;
   z-index: 1000;
   overflow: hidden;
   max-height: calc(var(--banner-height) + var(--header-height));
@@ -232,10 +232,14 @@ header {
   }
 
   &.is-mobile-open {
+    /* The drawer is the one case that still pins to the viewport: the header
+       is otherwise in flow, so go fixed here to cover the full screen. */
+    position: fixed;
+    inset: 0;
     height: initial;
+    min-height: 0;
     max-height: initial;
     overflow: initial;
-    bottom: 0;
 
     .header-content {
       height: 100%;
@@ -243,6 +247,36 @@ header {
 
     .brand-section {
       border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
+    }
+  }
+
+  /* Cart — mirrors the storefront minicart: #ffd400 block, #030404 glyph,
+     white glyph on hover (values lifted from the live site's custom.min.css). */
+  .cart-button {
+    display: flex;
+    flex-shrink: 0;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    margin-left: var(--spacing-m);
+    padding-inline: clamp(16px, 2vw, 29px);
+    background-color: var(--sk-yellow);
+    color: var(--sk-black);
+    transition: color 0.15s ease-in-out;
+
+    .icon {
+      display: block;
+      width: 26px;
+      height: 26px;
+    }
+
+    &:hover {
+      color: var(--color-light);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--sk-black);
+      outline-offset: -4px;
     }
   }
 }

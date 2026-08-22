@@ -1,10 +1,13 @@
 import { getConfig, getMetadata } from '../../scripts/ak.js';
+import loadIcons from '../../scripts/utils/icons.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { setColorScheme } from '../section-metadata/section-metadata.js';
 
 const { locale } = getConfig();
 
 const HEADER_PATH = '/fragments/nav/header';
+// The storefront itself is Magento; the cart lives there, not in EDS.
+const CART_URL = 'https://store.safety-kleen.com/en_us/checkout/cart/';
 const HEADER_ACTIONS = [
   '/tools/widgets/scheme',
   '/tools/widgets/language',
@@ -164,8 +167,30 @@ function decorateNavSection(section) {
   }
 }
 
+/**
+ * Cart button — the yellow block from the storefront's minicart. Built in code
+ * rather than authored, so it can't be dropped from the nav fragment by accident.
+ * Icons are normally swapped in by ak.js before blocks run, so this span is
+ * created too late for that pass and has to be converted explicitly.
+ */
+function decorateCart(section) {
+  const content = section.querySelector('.default-content') || section;
+  const link = document.createElement('a');
+  link.className = 'cart-button';
+  link.href = CART_URL;
+  link.setAttribute('aria-label', 'Cart');
+
+  const icon = document.createElement('span');
+  icon.className = 'icon icon-cart';
+  link.append(icon);
+
+  content.append(link);
+  loadIcons([icon]);
+}
+
 async function decorateActionSection(section) {
   section.classList.add('actions-section');
+  decorateCart(section);
 }
 
 async function decorateHeader(fragment) {

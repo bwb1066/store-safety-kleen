@@ -1,0 +1,7 @@
+<svg id="cart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="1.6"
+     stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.5 3.5h2.3l3.2 10.4a1.5 1.5 0 0 0 1.44 1.05h7.6a1.5 1.5 0 0 0 1.44-1.06L21 6.2H5.6"/>
+  <circle cx="10" cy="19" r="1.5"/>
+  <circle cx="17.2" cy="19" r="1.5"/>
+</svg>

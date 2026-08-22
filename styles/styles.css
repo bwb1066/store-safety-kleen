@@ -120,6 +120,7 @@
   --sk-yellow-rgb: 255 212 0;
   --sk-black: #030404;              /* utility nav bar */
   --sk-mega-grey: #7c7979;          /* mega-menu panel */
+  --sk-banner-blue: #109bfb;        /* promo banner strip */
   --sk-nav-underline: 4px;
 
   /* named colors */
@@ -172,7 +173,8 @@
 }
 
 html {
-  scroll-padding-top: calc(var(--header-height) + 1rem);
+  /* Header scrolls away with the page, so anchors no longer need to clear it. */
+  scroll-padding-top: 1rem;
 }
 
 body {
@@ -182,15 +184,18 @@ body {
   font-family: var(--font-family);
   font-size: var(--body-font-size-m);
   line-height: var(--body-line-height);
-  padding: calc(var(--banner-height) + var(--header-height)) 0 0;
+
+  /* No top padding: the header sits in normal flow and scrolls away. */
+  padding: 0;
 
   &.session {
     /* only allow font loading if a session */
     font-family: var(--font-family);
   }
 
-  &.has-breadcrumb {
-    margin: calc(var(--banner-height) + var(--header-height) + var(--breadcrumb-height)) 0 0;
+  /* Class name is set by decorateHeader() in scripts/ak.js — keep it plural. */
+  &.has-breadcrumbs {
+    margin: var(--breadcrumb-height) 0 0;
   }
 
   &.no-header {
@@ -201,9 +206,14 @@ body {
 }
 
 header {
-  display: none;
-  height: var(--header-height);
-  position: fixed;
+  /* The header element is empty until header.js fetches the nav fragment, so
+     reserve its height here — otherwise the fragment landing would push the
+     page down. (Replaces the body padding that offset the old fixed header.) */
+  display: block;
+  min-height: calc(var(--banner-height) + var(--header-height));
+
+  /* Containing block for the absolutely positioned mega-menu panels. */
+  position: relative;
 }
 
 a {
