@@ -123,7 +123,7 @@
   /* mega-grey darkened from the storefront's #7c7979 just enough to give
      white text 4.5:1 (WCAG AA / Lighthouse) */
   --sk-mega-grey: #767373;          /* mega-menu panel */
-  --sk-banner-blue: #109bfb;        /* promo banner strip (storefront blue; 2.95:1 with white text) */
+  --sk-banner-blue: #0b78c4;        /* promo banner strip — darkened from the storefront's #109bfb for 4.5:1 (AA) with white text */
   --sk-nav-underline: 4px;
 
   /* named colors */
