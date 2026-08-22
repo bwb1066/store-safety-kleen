@@ -509,13 +509,16 @@ body header {
       letter-spacing: 0.02em;
       white-space: nowrap;
       color: var(--sk-black);
-      border-bottom: var(--sk-nav-underline) solid transparent;
     }
 
+    /* thick yellow bar flush with the bottom edge of the white nav bar:
+       an inset shadow on the full-height link (line-height = nav height)
+       lands identically for every item, unlike a border-bottom, which
+       extends the box and shifts with the p-wrapped items */
     .main-nav-item:hover > p > .main-nav-link,
     .main-nav-item.is-open > p > .main-nav-link,
     .main-nav-item > a.main-nav-link:hover {
-      border-bottom-color: var(--sk-yellow);
+      box-shadow: inset 0 -6px 0 var(--sk-yellow);
     }
   }
 }

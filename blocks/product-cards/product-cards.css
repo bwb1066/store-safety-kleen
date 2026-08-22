@@ -155,6 +155,9 @@
 }
 
 .product-cards .product-card-add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: auto;
   padding: 10px 14px;
   font: inherit;
@@ -166,6 +169,17 @@
   border-radius: 3px;
   cursor: pointer;
   transition: background 0.2s ease;
+}
+
+/* storefront CTA treatment: thin full-height rule + right arrow */
+.product-cards .product-card-add::after {
+  content: "→";
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  margin: -10px -14px -10px 14px;
+  padding: 0 12px;
+  border-left: 1px solid color-mix(in srgb, currentcolor 30%, transparent);
 }
 
 .product-cards .product-card-add.is-added {

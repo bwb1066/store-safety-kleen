@@ -223,7 +223,8 @@ a {
   color: var(--color-link);
 
   &.btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     line-height: 1;
     font-family: var(--heading-font-family);
     font-weight: 700;
@@ -234,6 +235,18 @@ a {
     border-radius: 0;
     padding: 14px 22px;
     box-sizing: border-box;
+
+    /* storefront CTA treatment: thin full-height rule + right arrow.
+       Negative margins pull the cell out to the button's edges. */
+    &::after {
+      content: "→";
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      margin: -14px -22px -14px 22px;
+      padding: 0 18px;
+      border-left: 1px solid color-mix(in srgb, currentcolor 30%, transparent);
+    }
 
     &.btn-outline {
       background: transparent;
@@ -295,6 +308,30 @@ a {
 /* default-content rhythm */
 main .section > .default-content {
   padding-block: var(--spacing-xl);
+}
+
+/* section CTA pattern: a heading-led section whose CTA is a lone button in
+   its own paragraph puts that CTA top-right, on the heading row */
+main .section > .default-content:has(> h2:first-child):has(> p > .btn:only-child) {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--spacing-xl);
+  align-items: center;
+
+  > * {
+    grid-column: 1 / -1;
+  }
+
+  > h2:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  > p:has(> .btn:only-child) {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
 }
 
 /* a bare link list in default content renders as a card grid
