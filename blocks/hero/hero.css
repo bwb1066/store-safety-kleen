@@ -291,3 +291,23 @@ body .hero {
   }
 }
 
+/* Shorter heroes.
+   `.hero.large` (720px) out-specifies the 560px above, so restate it here. */
+body .hero.large {
+  --min-height: 480px;
+}
+
+/* Image-only promo banners have no foreground copy, so hero.js puts the
+   picture straight into .hero-foreground. Let the artwork set the height
+   instead of padding it out to --min-height. */
+body .hero .hero-foreground:not(:has(.fg-text)) {
+  min-height: 0;
+  padding: 0;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
