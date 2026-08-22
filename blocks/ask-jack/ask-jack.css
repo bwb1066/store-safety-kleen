@@ -1,0 +1,137 @@
+/* Author Kit puts blocks inside .block-content, which is unconstrained, so the
+   band is already full-bleed; only the inner content needs centering. */
+.ask-jack {
+  background: var(--color-shaded);
+  border-top: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.ask-jack .ask-jack-inner {
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
+  padding: var(--spacing-xxl) 0;
+}
+
+.ask-jack .ask-jack-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-m);
+  margin-bottom: var(--spacing-s);
+  color: var(--color-gray-600);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ask-jack .ask-jack-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--sk-yellow);
+  color: var(--sk-black);
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ask-jack .ask-jack-heading {
+  margin: 0 0 var(--spacing-l);
+  font-family: var(--heading-font-family);
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--sk-black);
+}
+
+.ask-jack .ask-jack-form {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-m);
+  max-width: 680px;
+  padding: 8px 8px 8px var(--spacing-l);
+  background: var(--sk-black);
+  border-radius: 40px;
+}
+
+.ask-jack .ask-jack-input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-light);
+  font-family: inherit;
+  font-size: var(--body-font-size-m);
+  font-weight: 500;
+}
+
+.ask-jack .ask-jack-input:focus {
+  outline: none;
+}
+
+.ask-jack .ask-jack-input::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* Focus ring rides on the pill, since the input itself is borderless. */
+.ask-jack .ask-jack-form:focus-within {
+  outline: 2px solid var(--sk-yellow);
+  outline-offset: 2px;
+}
+
+.ask-jack .ask-jack-submit {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sk-yellow);
+  color: var(--sk-black);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.ask-jack .ask-jack-submit:hover {
+  background: var(--color-yellow-600, #c9a800);
+}
+
+.ask-jack .ask-jack-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+  margin-top: var(--spacing-l);
+}
+
+.ask-jack .ask-jack-chip {
+  padding: 8px 14px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--color-gray-700);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+
+.ask-jack .ask-jack-chip:hover {
+  border-color: var(--sk-black);
+  background: var(--sk-yellow);
+  color: var(--sk-black);
+}
+
+@media (width >= 600px) {
+  .ask-jack .ask-jack-inner {
+    padding: calc(var(--spacing-xxl) * 1.25) 0;
+  }
+}
