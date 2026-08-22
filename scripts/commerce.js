@@ -297,6 +297,9 @@ async function ensureCart() {
       const saved = localStorage.getItem(CARTID_KEY);
       if (saved) cartId = saved;
     } catch (e) { /* ignore */ }
+    // Returning visitor: hydrate the saved cart's lines now, or the badge and
+    // drawer read empty until the first mutation refreshes the cache.
+    if (cartId) await refetchCart();
     if (!cartId) {
       const { cart } = await api('/cart', { method: 'POST', body: { site_key: SITE_KEY } });
       if (cart) {

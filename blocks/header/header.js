@@ -150,6 +150,27 @@ function decorateBrandSection(section) {
   brandLink.append(span);
 }
 
+/**
+ * Mobile hamburger — synthesized like the cart button so it can't be dropped
+ * from the nav fragment by accident. Toggles the base drawer (.is-mobile-open
+ * on <header>); the bars animate to an X via CSS.
+ */
+function decorateMenuToggle(section) {
+  const content = section.querySelector('.default-content') || section;
+  const btn = document.createElement('button');
+  btn.className = 'nav-toggle';
+  btn.setAttribute('aria-label', 'Menu');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  btn.addEventListener('click', () => {
+    const header = btn.closest('header');
+    const open = header.classList.toggle('is-mobile-open');
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.classList.toggle('nav-drawer-open', open);
+  });
+  content.prepend(btn);
+}
+
 function decorateNavSection(section) {
   section.classList.add('main-nav-section');
   const navContent = section.querySelector('.default-content');
@@ -207,7 +228,12 @@ async function decorateHeader(fragment) {
   const banner = sections.find((section) => section.querySelector('.banner')) || null;
   const chrome = sections.filter((section) => section !== banner);
 
-  if (chrome[0]) decorateBrandSection(chrome[0]);
+  if (chrome[0]) {
+    decorateBrandSection(chrome[0]);
+    decorateMenuToggle(chrome[0]);
+    // second cart lives in the brand row for mobile; CSS shows one per breakpoint
+    decorateCart(chrome[0]);
+  }
   if (chrome[1]) decorateNavSection(chrome[1]);
   if (chrome[2]) decorateActionSection(chrome[2]);
 

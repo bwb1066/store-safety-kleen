@@ -250,6 +250,80 @@ header {
     }
   }
 
+  /* ── mobile chrome: hamburger left, centered logo, cart glyph right ── */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    span {
+      width: 34px;
+      height: 4px;
+      background: var(--sk-black);
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+  }
+
+  &.is-mobile-open .nav-toggle {
+    span:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+    span:nth-child(2) { opacity: 0; }
+    span:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+  }
+
+  @media (width < 900px) {
+    .brand-section .default-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: var(--spacing-m);
+    }
+
+    /* keep the logo optically centered between the two side controls */
+    .brand-section .default-content > a:not(.cart-button) {
+      margin-inline: auto;
+
+      img {
+        height: 64px;
+      }
+    }
+
+
+    /* brand-row cart is a plain glyph, not the desktop yellow block.
+       Extra specificity: the theme paints .brand-section a white (reversed
+       logo) and the base sizes brand svgs to the logo box. */
+    .brand-section .default-content a.cart-button {
+      width: 44px;
+      flex: none;
+      justify-content: center;
+      background: none;
+      color: var(--sk-black);
+
+      .icon,
+      svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    /* drawer: scrollable, sections ease in */
+    &.is-mobile-open {
+      overflow-y: auto;
+
+      .main-nav-section,
+      .actions-section {
+        animation: sk-drawer-in 0.25s ease both;
+      }
+    }
+  }
+
   /* Cart — mirrors the storefront minicart: #ffd400 block, #030404 glyph,
      white glyph on hover (values lifted from the live site's custom.min.css). */
   .cart-button {
@@ -528,6 +602,12 @@ body header {
     max-height: calc(var(--banner-height) + var(--header-height));
     background-color: var(--color-light);
 
+    /* mobile-only chrome */
+    .nav-toggle,
+    .brand-section .cart-button {
+      display: none;
+    }
+
     .header-content {
       grid-template: var(--util-height) var(--main-nav-height) / auto 1fr;
       gap: 0 var(--spacing-l);
@@ -642,4 +722,21 @@ body header {
       margin: var(--spacing-xs) 0 var(--spacing-s) var(--spacing-m);
     }
   }
+}
+
+/* mobile drawer open: sections ease in; page behind stays put */
+@keyframes sk-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+body.nav-drawer-open {
+  overflow: hidden;
 }

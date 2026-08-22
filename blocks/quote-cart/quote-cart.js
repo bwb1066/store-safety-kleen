@@ -137,18 +137,20 @@ function buildDrawer() {
   });
 }
 
-/** Attach the drawer opener to the header cart link once it exists. */
+/** Attach the drawer opener to every header cart link once they exist
+    (desktop utility bar and the mobile brand row each carry one). */
 function wireHeaderCart() {
-  const badge = document.querySelector('.nav-cart-count');
-  const link = badge?.closest('a');
-  if (link && !link.dataset.quoteWired) {
+  const links = [...document.querySelectorAll('.nav-cart-count')]
+    .map((badge) => badge.closest('a')).filter(Boolean);
+  links.forEach((link) => {
+    if (link.dataset.quoteWired) return;
     link.dataset.quoteWired = 'true';
     link.addEventListener('click', (e) => {
       e.preventDefault();
       openDrawer();
     });
-  }
-  return !!link;
+  });
+  return links.length > 0;
 }
 
 export default function init(el) {
