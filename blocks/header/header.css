@@ -256,7 +256,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     width: 56px;
     height: 56px;
     padding: 0;
@@ -265,17 +265,17 @@ header {
     cursor: pointer;
 
     span {
-      width: 34px;
-      height: 4px;
+      width: 30px;
+      height: 3px;
       background: var(--sk-black);
       transition: transform 0.25s ease, opacity 0.2s ease;
     }
   }
 
   &.is-mobile-open .nav-toggle {
-    span:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+    span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
     span:nth-child(2) { opacity: 0; }
-    span:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+    span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
   }
 
   @media (width < 900px) {
@@ -286,13 +286,10 @@ header {
       padding-inline: var(--spacing-m);
     }
 
-    /* keep the logo optically centered between the two side controls */
-    .brand-section .default-content > a:not(.cart-button) {
-      margin-inline: auto;
-
-      img {
-        height: 64px;
-      }
+    /* logo scaled up to use the row; centered by space-between with the
+       near-equal-width controls either side */
+    .brand-section .default-content a:not(.cart-button) img {
+      height: 84px;
     }
 
 
@@ -300,7 +297,7 @@ header {
        Extra specificity: the theme paints .brand-section a white (reversed
        logo) and the base sizes brand svgs to the logo box. */
     .brand-section .default-content a.cart-button {
-      width: 56px;
+      width: 64px;
       flex: none;
       justify-content: center;
       background: none;
@@ -308,13 +305,13 @@ header {
 
       .icon,
       svg {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
       }
 
       /* anchor the badge to the glyph, not the full-height link box */
       .nav-cart-count {
-        top: calc(50% - 28px);
+        top: calc(50% - 34px);
         right: 0;
         background: var(--sk-yellow);
         color: var(--sk-black);
