@@ -253,7 +253,7 @@ body .hero {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgb(3 4 4 / 72%) 0%, rgb(3 4 4 / 35%) 55%, rgb(3 4 4 / 10%) 100%);
+      background: rgb(3 4 4 / 40%);
     }
   }
 
@@ -269,26 +269,41 @@ body .hero {
     padding: var(--spacing-xxl) 0;
   }
 
-  .fg-text { max-width: 640px; }
+  /* centered copy block, storefront style: H1 spans the rails on one line,
+     subhead and buttons center under it. The subhead is a bare div sibling
+     of .fg-text (no p/heading, so hero.js doesn't tag it). */
+  .hero-foreground {
+    text-align: center;
+  }
+
+  .fg-text {
+    width: 100%;
+  }
 
   .hero-heading {
     margin: 0 0 var(--spacing-l);
     font-family: var(--heading-font-family);
     font-weight: 700;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.02;
+    /* storefront hero spec: Roboto Condensed Bold 70px / 78px */
+    font-size: clamp(2.5rem, 5.6vw, 4.375rem);
+    line-height: 1.11;
     text-transform: uppercase;
     color: var(--color-light);
   }
 
-  .fg-text p {
-    font-size: var(--body-font-size-l);
-    line-height: 1.5;
+  /* storefront subhead spec: Arial 300, 20px / 28px */
+  .hero-foreground > div:not(.fg-text, .btn-group) {
+    max-width: 66rem;
+    margin-inline: auto;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.4;
   }
 
   .btn-group {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--spacing-m);
     margin-top: var(--spacing-l);
   }
