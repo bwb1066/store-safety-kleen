@@ -229,7 +229,7 @@
    ============================================================ */
 
 body .hero {
-  --min-height: 560px;
+  --min-height: 616px;
 
   color: var(--color-light);
 
@@ -280,8 +280,10 @@ body .hero {
     width: 100%;
   }
 
-  .hero-heading {
-    margin: 0 0 var(--spacing-l);
+  /* .hero-foreground prefix out-specifies the base layer's nested
+     `.hero-foreground .hero-heading { margin: 0 }` */
+  .hero-foreground .hero-heading {
+    margin: 0 0 var(--spacing-xl);
     font-family: var(--heading-font-family);
     font-weight: 700;
     /* storefront hero spec: Roboto Condensed Bold 70px / 78px */
@@ -300,19 +302,19 @@ body .hero {
     line-height: 1.4;
   }
 
-  .btn-group {
+  .hero-foreground .btn-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--spacing-m);
-    margin-top: var(--spacing-l);
+    margin-top: var(--spacing-xl);
   }
 }
 
 /* Shorter heroes.
    `.hero.large` (720px) out-specifies the 560px above, so restate it here. */
 body .hero.large {
-  --min-height: 480px;
+  --min-height: 528px;
 }
 
 /* Image-only promo banners have no foreground copy, so hero.js puts the
