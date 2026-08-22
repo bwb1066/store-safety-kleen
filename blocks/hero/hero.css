@@ -233,6 +233,10 @@ body .hero {
 
   color: var(--color-light);
 
+  /* on the root (not .hero-foreground) so the raw markup in DA's canvas
+     inherits the centering too */
+  text-align: center;
+
   .hero-background {
     position: absolute;
     inset: 0;
@@ -277,8 +281,13 @@ body .hero {
     width: 100%;
   }
 
-  /* .hero-foreground prefix out-specifies the base layer's nested
-     `.hero-foreground .hero-heading { margin: 0 }` */
+  /* Structural h1 selector, not .hero-heading: on the rendered site they are
+     the same element (hero.js tags the h1), but DA's Experience Canvas shows
+     raw undecorated markup — keying the type off `h1` keeps the hero heading
+     looking right in the editor too. The .hero-foreground copy of the rule
+     out-specifies the base layer's nested `.hero-foreground .hero-heading
+     { margin: 0 }` on the decorated page. */
+  h1,
   .hero-foreground .hero-heading {
     margin: 0 0 var(--spacing-xl);
     font-family: var(--heading-font-family);
