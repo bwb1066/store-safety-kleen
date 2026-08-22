@@ -1,6 +1,6 @@
 .banner {
-  background-color: var(--sk-yellow);
-  color: var(--sk-black);
+  background-color: var(--sk-banner-blue);
+  color: var(--color-light);
 }
 
 /* when the banner is the header's top bar, span the full width */
@@ -18,7 +18,7 @@ header .banner-section {
   font-size: var(--body-font-size-s);
   font-weight: 700;
   line-height: 1.44;
-  color: var(--sk-black);
+  color: var(--color-light);
 }
 
 .banner .banner-inner p {
@@ -27,7 +27,7 @@ header .banner-section {
 
 .banner a,
 .banner .banner-cta {
-  color: var(--sk-black);
+  color: var(--color-light);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 2px;
