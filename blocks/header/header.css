@@ -253,6 +253,7 @@ header {
   /* Cart — mirrors the storefront minicart: #ffd400 block, #030404 glyph,
      white glyph on hover (values lifted from the live site's custom.min.css). */
   .cart-button {
+    position: relative;
     display: flex;
     flex-shrink: 0;
     align-self: stretch;
@@ -268,6 +269,27 @@ header {
       display: block;
       width: 26px;
       height: 26px;
+    }
+
+    /* Quote count, hydrated by quote-cart.js. Hidden while empty so the
+       button reads as a plain cart until something is added. */
+    .nav-cart-count {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      min-width: 18px;
+      padding: 1px 4px;
+      border-radius: 999px;
+      background: var(--sk-black);
+      color: var(--sk-yellow);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 16px;
+      text-align: center;
+    }
+
+    &:not(.has-items) .nav-cart-count {
+      display: none;
     }
 
     &:hover {

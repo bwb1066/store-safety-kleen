@@ -172,6 +172,10 @@ function decorateNavSection(section) {
  * rather than authored, so it can't be dropped from the nav fragment by accident.
  * Icons are normally swapped in by ak.js before blocks run, so this span is
  * created too late for that pass and has to be converted explicitly.
+ *
+ * The .nav-cart-count badge is the hook quote-cart.js looks for: when that block
+ * is on the page it hydrates the count and takes over the click to open the
+ * quote drawer. Without it, the href falls through to the Magento cart.
  */
 function decorateCart(section) {
   const content = section.querySelector('.default-content') || section;
@@ -182,7 +186,10 @@ function decorateCart(section) {
 
   const icon = document.createElement('span');
   icon.className = 'icon icon-cart';
-  link.append(icon);
+  const count = document.createElement('span');
+  count.className = 'nav-cart-count';
+  count.textContent = '0';
+  link.append(icon, count);
 
   content.append(link);
   loadIcons([icon]);
