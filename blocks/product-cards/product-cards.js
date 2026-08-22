@@ -140,7 +140,13 @@ export default async function init(el) {
   const render = async (query) => {
     let products;
     if (cfg.skus.length && !query) {
-      const resolved = await Promise.all(cfg.skus.map((s) => store.getProduct(s)));
+      // Resolve each SKU via search rather than getProduct: entitlement-gated
+      // SKUs come back as an empty result (200) instead of a 404, so an
+      // anonymous page load stays free of console errors.
+      const resolved = await Promise.all(cfg.skus.map(async (s) => {
+        const hits = await store.search({ query: s, limit: 8 });
+        return hits.find((p) => String(p.sku) === s) || null;
+      }));
       products = resolved.filter(Boolean);
     } else {
       products = await store.search({
