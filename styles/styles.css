@@ -166,6 +166,7 @@
   --main-nav-height: 96px;
   --header-height: calc(var(--util-height) + var(--main-nav-height));
   --breadcrumb-height: 24px;
+
   /* Estimated up front so the header reserves the promo strip's space on
      first paint (the site-wide nav fragment always carries one) — the whole
      page shifting when the banner landed was the only CLS on the site.
