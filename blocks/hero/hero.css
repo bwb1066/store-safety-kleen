@@ -242,7 +242,10 @@ body .hero {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 10% 50%;
+
+      /* anchor the crop to the top of the artwork so the technician's head
+         stays visible just below the nav, matching the storefront design */
+      object-position: 10% 0;
     }
 
     /* dark scrim for text legibility over the photo */
