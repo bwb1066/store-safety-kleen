@@ -1,7 +1,13 @@
+.product-cards {
+  padding-block: var(--spacing-xxl);
+}
+
 .product-cards .product-cards-inner {
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--spacing-l);
 }
 
 .product-cards .product-cards-heading {
