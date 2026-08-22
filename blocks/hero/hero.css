@@ -257,6 +257,9 @@ body .hero {
     }
   }
 
+  /* centered copy block, storefront style: H1 spans the rails on one line,
+     subhead and buttons center under it. The subhead is a bare div sibling
+     of .fg-text (no p/heading, so hero.js doesn't tag it). */
   .hero-foreground {
     position: relative;
     z-index: 1;
@@ -267,12 +270,6 @@ body .hero {
     max-width: var(--grid-container-width);
     margin: 0 auto;
     padding: var(--spacing-xxl) 0;
-  }
-
-  /* centered copy block, storefront style: H1 spans the rails on one line,
-     subhead and buttons center under it. The subhead is a bare div sibling
-     of .fg-text (no p/heading, so hero.js doesn't tag it). */
-  .hero-foreground {
     text-align: center;
   }
 
@@ -286,6 +283,7 @@ body .hero {
     margin: 0 0 var(--spacing-xl);
     font-family: var(--heading-font-family);
     font-weight: 700;
+
     /* storefront hero spec: Roboto Condensed Bold 70px / 78px */
     font-size: clamp(2.5rem, 5.6vw, 4.375rem);
     line-height: 1.11;
