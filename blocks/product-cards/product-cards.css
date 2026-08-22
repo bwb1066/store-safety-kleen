@@ -171,7 +171,7 @@
 .product-cards .product-card-add:hover { background: var(--color-yellow-600, #c9a800); }
 
 .product-cards .product-card-add.is-added {
-  background: #1a7f37;
+  background: var(--sk-banner-blue);
   color: #fff;
 }
 
