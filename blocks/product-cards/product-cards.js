@@ -1,4 +1,15 @@
 import store from '../../scripts/commerce.js';
+/**
+ * This grid stays exactly as the author curated it. Persona-driven products
+ * arrive as a separate, clearly-labelled strip (scripts/recommended.js) rather
+ * than by quietly reshuffling someone's curated selection — reordering six
+ * pinned SKUs was too subtle to read as personalization at all, and for two of
+ * the four personas nothing among them matched, so nothing moved.
+ *
+ * What this block still does on a p13n change is re-render for the IDENTITY
+ * axis: a contract account changes prices and makes the restricted SKUs
+ * resolve.
+ */
 
 /**
  * product-cards — a grid of catalog products with specs, availability, and an
@@ -61,7 +72,7 @@ function availabilityPill(product) {
   return pill;
 }
 
-function buildCard(product) {
+export function buildCard(product) {
   const card = document.createElement('article');
   card.className = 'product-card';
   card.dataset.sku = product.sku;
@@ -137,7 +148,18 @@ export default async function init(el) {
   const grid = document.createElement('div');
   grid.className = 'product-cards-grid';
 
+  let lastQuery = '';
+  // Renders are async and can overlap — a persona switch, an identity switch
+  // and a keystroke in the search box all trigger one. Without a token the
+  // slower request can land last and overwrite the newer result.
+  let renderSeq = 0;
+
   const render = async (query) => {
+    const seq = renderSeq + 1;
+    renderSeq = seq;
+    lastQuery = query || '';
+    const effective = query || cfg.query;
+
     let products;
     if (cfg.skus.length && !query) {
       // Resolve each SKU via search rather than getProduct: entitlement-gated
@@ -150,12 +172,15 @@ export default async function init(el) {
       products = resolved.filter(Boolean);
     } else {
       products = await store.search({
-        query: query || cfg.query,
+        query: effective,
         filters: cfg.category ? null : null,
         limit: cfg.limit,
       });
       if (cfg.category) products = products.filter((p) => p.category === cfg.category);
     }
+    // A newer render started while this one was in flight — drop this result.
+    if (seq !== renderSeq) return;
+
     grid.replaceChildren(...products.map(buildCard));
     if (!products.length) {
       grid.innerHTML = '<p class="product-cards-empty">No matching products in the catalog.</p>';
@@ -178,5 +203,11 @@ export default async function init(el) {
 
   section.append(grid);
   el.replaceChildren(section);
+
+  // Re-render on any personalization change: a new persona can change which
+  // products show, and a new identity changes contract price and whether the
+  // restricted SKUs resolve at all (the store now sends ?buyer= with them).
+  document.addEventListener('p13n:change', () => { render(lastQuery); });
+
   await render('');
 }

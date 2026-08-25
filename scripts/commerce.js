@@ -404,6 +404,9 @@ async function addByQuery(text, via = 'concierge') {
 
 // ── Public API (dispatches to the active adapter) ────────────────────────
 
+/** The live quote for whichever adapter is active. */
+const currentQuote = () => (REMOTE ? cachedCart : readLocalQuote());
+
 const store = {
   siteKey: SITE_KEY,
   remote: REMOTE,
@@ -413,12 +416,14 @@ const store = {
   formatPrice,
   resolvePrice,
   priceTable,
-  quoteCount,
-  quoteTotal,
+  // The quote argument is optional: called bare these report the live quote
+  // rather than silently returning 0 for an undefined one.
+  quoteCount: (quote) => quoteCount(quote ?? currentQuote()),
+  quoteTotal: (quote) => quoteTotal(quote ?? currentQuote()),
   subscribe,
   addByQuery,
   getBuyer: () => currentBuyer,
-  getQuote: () => (REMOTE ? cachedCart : readLocalQuote()),
+  getQuote: currentQuote,
   search: (opts) => (REMOTE ? remoteSearch(opts) : localSearch(opts)),
   getProduct: (sku) => (REMOTE ? remoteGetProduct(sku) : localGetProduct(sku)),
   checkAvailability: (sku, qty) => (

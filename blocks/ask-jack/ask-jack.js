@@ -1,4 +1,37 @@
 import { getMetadata } from '../../scripts/ak.js';
+import { getAudience } from '../../scripts/p13n.js';
+
+/**
+ * Persona → opening prompts. The chips are the cheapest place a persona shows
+ * up on this site: no new content is needed, and the shift is legible the
+ * instant the audience changes.
+ *
+ * The authored `suggestions` row is the ANONYMOUS baseline — a known persona
+ * overrides it, the same way a Target activity overrides default content. The
+ * author still owns what an unidentified visitor sees.
+ */
+const PERSONA_SUGGESTIONS = {
+  fleet_maintenance: [
+    'Schedule a used oil pickup',
+    'Bulk antifreeze for a 40-truck fleet',
+    'Compare hydraulic fluids',
+  ],
+  collision_repair: [
+    'Find the right parts washer',
+    'Solvent options for a 3-bay shop',
+    'Brake cleaner by the case',
+  ],
+  industrial_ehs: [
+    'Build a spill kit for a loading dock',
+    'Absorbents for a 55-gallon spill',
+    'Containment pallets and berms',
+  ],
+  pfas_remediation: [
+    'How do PFAS test kits work?',
+    'Sampling for PFAS in groundwater',
+    'Dispose of PFAS-contaminated media',
+  ],
+};
 
 // Brand Concierge (Jack) config is author-controlled via page metadata
 // (concierge-url / concierge-key / concierge-site). This block is the
@@ -131,17 +164,23 @@ export default function init(el) {
 
   const chips = document.createElement('div');
   chips.className = 'ask-jack-chips';
-  for (const s of cfg.suggestions) {
-    const chip = document.createElement('button');
-    chip.type = 'button';
-    chip.className = 'ask-jack-chip';
-    chip.textContent = s;
-    chip.addEventListener('click', () => {
-      input.value = s;
-      openJack(s);
-    });
-    chips.append(chip);
-  }
+
+  const renderChips = () => {
+    const items = PERSONA_SUGGESTIONS[getAudience()] || cfg.suggestions;
+    chips.replaceChildren(...items.map((s) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'ask-jack-chip';
+      chip.textContent = s;
+      chip.addEventListener('click', () => {
+        input.value = s;
+        openJack(s);
+      });
+      return chip;
+    }));
+  };
+  renderChips();
+  document.addEventListener('p13n:change', renderChips);
 
   inner.append(eyebrow, heading, form, chips);
   el.replaceChildren(inner);

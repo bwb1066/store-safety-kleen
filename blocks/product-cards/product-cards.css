@@ -201,3 +201,21 @@
 @media (width >= 900px) {
   .product-cards .product-cards-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ---------------------------------------------------------------------------
+   Recommended-for-<persona> strip (scripts/recommended.js)
+   Reuses this block's card/grid styling — it only ever renders on a page that
+   already has a product grid, so this stylesheet is guaranteed to be loaded.
+   The tint and top rule are what set it apart from the authored grid; the
+   heading names the persona, so it needs no extra label.
+   --------------------------------------------------------------------------- */
+
+.recommended-strip {
+  background-color: var(--color-gray-100, #f1f1f1);
+  border-top: 4px solid var(--sk-yellow, rgb(255 212 0));
+  padding-block: var(--spacing-xl, 32px);
+}
+
+.recommended-strip .product-cards-heading {
+  margin-top: 0;
+}
