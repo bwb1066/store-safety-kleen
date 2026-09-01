@@ -40,7 +40,7 @@ const PERSONA_SUGGESTIONS = {
 const WIDGET_BASE = 'https://bwb1066.github.io/brand-concierge/widget/';
 // Version query busts the browser/CDN module cache when the widget updates
 // (the GH Pages URL is otherwise cached for 10 min with no revalidation).
-const WIDGET_URL = `${WIDGET_BASE}brand-concierge.js?v=commerce2`;
+const WIDGET_URL = `${WIDGET_BASE}brand-concierge.js?v=commerce3`;
 // eslint-disable-next-line max-len
 const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5anF1d2hrbXp5ZWRrd3VhZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjY4MjcsImV4cCI6MjA5MDY0MjgyN30.GkMBLXBZr9u34m4uI6ZR-2ZniLZD3RkjropjQw058k4';
 const SUPABASE_URL = getMetadata('concierge-url') || 'https://cyjquwhkmzyedkwuaffc.supabase.co';

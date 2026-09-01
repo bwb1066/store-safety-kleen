@@ -86,23 +86,19 @@ export default {
 
   // Adding a drum of antifreeze to a quote is a far better statement of
   // intent than reading an article, so on this site the commerce signal is
-  // the primary one. The store emits the whole cart on every change, so
-  // track SKUs already counted and only classify genuinely new lines —
-  // otherwise a quantity bump would re-tally the same product and drown out
-  // the rest. Each new line gets two events: a standards-based
-  // commerce.productListAdds (real productListItems, so it shows up in
-  // out-of-box commerce reporting) plus the generic audience-tally signal.
+  // the primary one. The store only emits on actual mutations (subscribe()
+  // does NOT fire synchronously with current state), so seed `counted` from
+  // store.getQuote() up front — otherwise the very first real "Add to quote"
+  // click on a fresh page load would be mistaken for a restored cart and
+  // silently skipped. Track SKUs already counted so a quantity bump doesn't
+  // re-tally the same product. Each new line gets two events: a
+  // standards-based commerce.productListAdds (real productListItems, so it
+  // shows up in out-of-box commerce reporting) plus the generic
+  // audience-tally signal.
   wireExtraSignals({ classify, recordSignal, track }) {
-    const counted = new Set();
-    let primed = false;
+    const counted = new Set((store.getQuote()?.lines || []).map((l) => String(l.sku)));
     store.subscribe((quote) => {
       const lines = quote?.lines || [];
-      // The first emission is the restored cart, not a fresh intent signal.
-      if (!primed) {
-        primed = true;
-        lines.forEach((l) => counted.add(String(l.sku)));
-        return;
-      }
       lines.forEach((line) => {
         const sku = String(line.sku);
         if (counted.has(sku)) return;
