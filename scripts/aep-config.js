@@ -13,9 +13,17 @@ import store from './commerce.js';
  * signal.
  */
 export default {
-  // XDM tenant namespace the personalization signal is written under. Must
-  // match the tenant id of whatever AEP schema the datastream points at.
-  tenantId: '_safetykleen',
+  // The XDM tenant namespace every custom field goes under. An AEP tenant id
+  // is assigned ONCE PER IMS ORG, not per site — this org's real tenant is
+  // `_demosystem4` (confirmed against the BWBReplicaSiteDemo schema).
+  // edmund-optics shares this same org/datastream and must use the same
+  // value here.
+  tenantId: '_demosystem4',
+
+  // This replica's identifier, included on every tracked event so the
+  // datastream/schema shared with other replicas can still be filtered per
+  // site.
+  site: 'store-safety-kleen',
 
   // Ask Jack's chat widget dispatches this with { role, prompt, recommendations }.
   chatEventName: 'brand-concierge:message',
@@ -76,20 +84,15 @@ export default {
     demoFlag: 'sk_demo',
   },
 
-  // Quote adds get their own XDM eventType; everything else falls back to
-  // the generic content/chat split.
-  eventTypeForSource(source) {
-    if (source === 'commerce') return 'commerce.productListAdds';
-    return source === 'content' ? 'web.webpagedetails.pageViews' : 'experience.chat.interaction';
-  },
-
   // Adding a drum of antifreeze to a quote is a far better statement of
   // intent than reading an article, so on this site the commerce signal is
   // the primary one. The store emits the whole cart on every change, so
   // track SKUs already counted and only classify genuinely new lines —
   // otherwise a quantity bump would re-tally the same product and drown out
-  // the rest.
-  wireExtraSignals({ classify, recordSignal }) {
+  // the rest. Each new line gets two events: a standards-based
+  // commerce.productListAdds (real productListItems, so it shows up in
+  // out-of-box commerce reporting) plus the generic audience-tally signal.
+  wireExtraSignals({ classify, recordSignal, track }) {
     const counted = new Set();
     let primed = false;
     store.subscribe((quote) => {
@@ -104,6 +107,17 @@ export default {
         const sku = String(line.sku);
         if (counted.has(sku)) return;
         counted.add(sku);
+        track('commerce.productListAdds', {
+          standard: {
+            commerce: { productListAdds: { value: 1 } },
+            productListItems: [{
+              SKU: sku,
+              name: line.name,
+              quantity: line.qty,
+              priceTotal: { value: line.qty * line.unit_price },
+            }],
+          },
+        });
         recordSignal(classify(line.name), 'commerce', { sku });
       });
     });

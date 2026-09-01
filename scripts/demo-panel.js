@@ -22,6 +22,7 @@
  */
 
 import initWebSDK from './websdk.js';
+import { track } from './personalization.js';
 import config from './aep-config.js';
 
 const ADOBE_RED = '#fa0f00';
@@ -120,11 +121,8 @@ function setAudience(key) {
   else sessionStorage.removeItem(KEYS.override);
   window[AUD_GLOBAL] = key || undefined;
   // Show the decision request the site would make for this persona.
-  window.alloy('sendEvent', {
-    xdm: {
-      eventType: 'decisioning.propositionFetch',
-      _demo: { decisionScope: config.decisionScope, persona: key || 'default' },
-    },
+  track('decisioning.propositionFetch', {
+    standard: { _demo: { decisionScope: config.decisionScope, persona: key || 'default' } },
   });
   announce();
   render();
@@ -139,9 +137,8 @@ function setBuyer(id) {
   window.brandCommerce?.useBuyer?.(next || null);
 
   const persona = PERSONAS.find((p) => p.id === next);
-  window.alloy('sendEvent', {
-    xdm: {
-      eventType: next ? 'identity.authenticatedState' : 'identity.loggedOut',
+  track(next ? 'identity.authenticatedState' : 'identity.loggedOut', {
+    standard: {
       identityMap: next
         ? { CRMID: [{ id: next, primary: true, authenticatedState: 'authenticated' }] }
         : {},
@@ -298,15 +295,15 @@ export default function initDemoPanel() {
   if (ss.audience()) window[AUD_GLOBAL] = ss.audience();
   render();
   renderEvents();
-  // Emit the page view the Web SDK sends on load, so the inspector is populated.
-  window.alloy('sendEvent', {
-    xdm: {
-      eventType: 'web.webpagedetails.pageViews',
+  // Personalization already sent the real page view before the demo panel
+  // loaded (see lazy.js's call order) — that event went out before this
+  // logger existed to capture it, so re-emit it here purely to populate the
+  // inspector.
+  track('web.webpagedetails.pageViews', {
+    standard: {
       web: {
         webPageDetails: {
-          name: document.title,
-          URL: window.location.href,
-          pageViews: { value: 1 },
+          name: document.title, URL: window.location.href, pageViews: { value: 1 },
         },
       },
     },
