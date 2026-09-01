@@ -1,64 +1,55 @@
-import store from './commerce.js';
+import { getMetadata } from './ak.js';
+import config from './aep-config.js';
 
 /**
- * Turn behavior into an audience signal.
+ * Turn behavior into an audience signal, from any number of sources:
+ *   - Chat turns (the widget's `config.chatEventName` event, if configured)
+ *   - Any audience-tagged page view (via `audience`/`content-type` page metadata)
+ *   - Whatever else `config.wireExtraSignals` wires up (e.g. a commerce store's
+ *     cart/quote changes) — see aep-config.example.js
  *
- * The Edmund Optics replica derives this from Knowledge Center page views plus
- * concierge chat turns. Safety-Kleen is a storefront with no article library,
- * so the content source is replaced by a stronger one for a B2B buyer:
- *
- *   - Concierge chat turns (the widget's `brand-concierge:message` event)
- *   - Quote activity — what actually gets added to the quote
- *
- * Adding a drum of antifreeze to a quote is a far better statement of intent
- * than reading an article, so on this site the commerce signal is the primary
- * one and the chat signal supports it.
- *
- * Each signal (a) updates a per-session tally and sets window.skAudience to the
- * leading audience — so on-page consumers personalize immediately, even before
+ * Each signal (a) updates a per-session tally and sets a window global (name
+ * from `config.audienceGlobal`, default `aepAudience`) to the leading
+ * audience — so on-page block JS can personalize immediately, even before
  * Adobe is live — and (b) pushes a DERIVED event to Adobe via the Web SDK for
  * unified-profile enrichment (GATED on window.alloy, so it's inert until the
- * SDK is configured; see websdk.js). Raw prompt text is never sent — only the
- * derived audience.
+ * SDK is configured; see websdk.js). Raw prompt/content text is never sent —
+ * only the derived audience.
+ *
+ * Everything site-specific — audience segments + classification rules, the
+ * XDM tenant namespace, chat event name, extra signal sources, storage key
+ * names — comes from aep-config.js. That's the only file a new site needs to
+ * edit to reuse this module.
  */
 
-export const AUDIENCES = [
-  'fleet_maintenance',
-  'collision_repair',
-  'industrial_ehs',
-  'pfas_remediation',
-];
+const KEYS = {
+  override: 'aep_audience_override',
+  tally: 'aep_audience_signal',
+  ...config.storageKeys,
+};
+const AUD_GLOBAL = config.audienceGlobal || 'aepAudience';
 
-const STORE_KEY = 'sk_audience_signal';
+const AUDIENCES = config.audiences.map((a) => a.key);
 
-// Keyword → audience. Ordered most-specific first: PFAS vocabulary is
-// unambiguous, whereas "drum" and "solvent" show up across the whole catalog,
-// so the broader rules must not get first refusal.
-const RULES = [
-  ['pfas_remediation', /pfas|pfoa|pfos|forever chemical|remediat|groundwater|leachate|water sampl|test kit/i],
-  ['collision_repair', /parts washer|brake clean|degreas|body shop|collision|aerosol|paint gun|solvent tank/i],
-  ['fleet_maintenance', /motor oil|lubricant|antifreeze|gear oil|hydraulic|driveline|grease|windshield|transmission|bulk oil|fleet/i],
-  ['industrial_ehs', /absorb|spill|\bsock\b|\bboom\b|pillow|containment|pallet|\bppe\b|safety cabinet|berm|wiper|recycling kit/i],
-];
-
-function classify(text) {
-  const hit = RULES.find(([, re]) => re.test(text || ''));
-  return hit ? hit[0] : 'default';
+/** Classify free text into a configured audience key, or 'default'. */
+export function classify(text) {
+  const hit = config.audiences.find(({ match }) => match.test(text || ''));
+  return hit ? hit.key : 'default';
 }
 
 /**
- * Does this text read as belonging to `audience`? Shared with the blocks so a
- * curated product grid can be re-ordered by persona relevance using exactly
- * the same vocabulary the signal classifier uses.
+ * Does this text read as belonging to `audience`? Exposed so block code can
+ * reorder/filter content by persona relevance using the same vocabulary the
+ * signal classifier uses.
  */
 export function matchesAudience(text, audience) {
-  const rule = RULES.find(([key]) => key === audience);
-  return rule ? rule[1].test(text || '') : false;
+  const rule = config.audiences.find((a) => a.key === audience);
+  return rule ? rule.match.test(text || '') : false;
 }
 
 function readTally() {
   try {
-    return JSON.parse(sessionStorage.getItem(STORE_KEY)) || {};
+    return JSON.parse(sessionStorage.getItem(KEYS.tally)) || {};
   } catch (e) {
     return {};
   }
@@ -76,44 +67,37 @@ function leadingAudience(tally) {
   return best;
 }
 
-/**
- * Record one signal: bump the session tally (skipping the neutral 'default'),
- * promote the leading audience, and enrich the Adobe profile if the SDK is live.
- * An explicit demo-panel override outranks the derived signal, so while one is
- * set we still tally but do not promote.
- */
-function recordSignal(audience, source, extra = {}) {
+function defaultEventType(source) {
+  return source === 'content' ? 'web.webpagedetails.pageViews' : 'experience.chat.interaction';
+}
+
+// Record one signal: bump the session tally (skipping the neutral 'default'),
+// promote the leading audience, and enrich the Adobe profile if the SDK is live.
+// An explicit demo-panel override outranks the derived signal, so while one is
+// set we still tally but do not promote.
+export function recordSignal(audience, source, extra = {}) {
   if (audience && audience !== 'default') {
     const tally = readTally();
     tally[audience] = (tally[audience] || 0) + 1;
     try {
-      sessionStorage.setItem(STORE_KEY, JSON.stringify(tally));
+      sessionStorage.setItem(KEYS.tally, JSON.stringify(tally));
     } catch (e) { /* private mode — the signal is best-effort */ }
 
     let overridden = false;
     try {
-      overridden = !!sessionStorage.getItem('sk_audience_override');
+      overridden = !!sessionStorage.getItem(KEYS.override);
     } catch (e) { /* private mode */ }
     if (!overridden) {
-      const lead = leadingAudience(tally) || window.skAudience;
-      if (lead !== window.skAudience) {
-        window.skAudience = lead;
-        document.dispatchEvent(new CustomEvent('p13n:change', {
-          detail: { audience: lead, source },
-        }));
-      }
+      window[AUD_GLOBAL] = leadingAudience(tally) || window[AUD_GLOBAL];
     }
   }
 
   if (typeof window.alloy === 'function') {
-    const eventType = source === 'commerce'
-      ? 'commerce.productListAdds'
-      : 'experience.chat.interaction';
+    const eventType = (config.eventTypeForSource || defaultEventType)(source);
     window.alloy('sendEvent', {
       xdm: {
         eventType,
-        // Placeholder tenant field group — map to the real AEP schema path.
-        _safetykleen: { signal: { source, audience: audience || 'default', ...extra } },
+        [config.tenantId]: { signal: { source, audience: audience || 'default', ...extra } },
       },
     });
   }
@@ -124,52 +108,39 @@ function recordSignal(audience, source, extra = {}) {
 function applyStoredAudience() {
   let override = null;
   try {
-    override = sessionStorage.getItem('sk_audience_override');
+    override = sessionStorage.getItem(KEYS.override);
   } catch (e) { /* private mode */ }
   if (override) {
-    window.skAudience = override;
+    window[AUD_GLOBAL] = override;
     return;
   }
   const lead = leadingAudience(readTally());
-  if (lead) window.skAudience = lead;
+  if (lead) window[AUD_GLOBAL] = lead;
 }
 
 function wireChat() {
-  document.addEventListener('brand-concierge:message', (e) => {
+  if (!config.chatEventName) return;
+  document.addEventListener(config.chatEventName, (e) => {
     const detail = e.detail || {};
     if (detail.role !== 'assistant') return;
     const hay = [
       detail.prompt || '',
       ...(detail.recommendations || []).map((r) => `${r.title || ''} ${r.reason || ''}`),
     ].join(' ');
-    recordSignal(classify(hay), 'concierge', {
+    recordSignal(classify(hay), 'chat', {
       recommendedCount: (detail.recommendations || []).length,
     });
   });
 }
 
-/**
- * Quote activity. The store emits the whole cart on every change, so track the
- * SKUs already counted and only classify genuinely new lines — otherwise a
- * quantity bump would re-tally the same product and drown out the rest.
- */
-function wireCommerce() {
-  const counted = new Set();
-  let primed = false;
-  store.subscribe((quote) => {
-    const lines = quote?.lines || [];
-    // The first emission is the restored cart, not a fresh intent signal.
-    if (!primed) {
-      primed = true;
-      lines.forEach((l) => counted.add(String(l.sku)));
-      return;
-    }
-    lines.forEach((line) => {
-      const sku = String(line.sku);
-      if (counted.has(sku)) return;
-      counted.add(sku);
-      recordSignal(classify(line.name), 'commerce', { sku });
-    });
+// Any audience-tagged page view is an implicit signal.
+function recordContentView() {
+  const audience = getMetadata('audience');
+  const contentType = getMetadata('content-type');
+  if (!audience && !contentType) return;
+  recordSignal(audience, 'content', {
+    contentType: contentType || undefined,
+    topic: getMetadata('topic') || undefined,
   });
 }
 
@@ -180,5 +151,6 @@ export default function initPersonalization() {
   wired = true;
   applyStoredAudience();
   wireChat();
-  wireCommerce();
+  recordContentView();
+  config.wireExtraSignals?.({ classify, recordSignal });
 }
